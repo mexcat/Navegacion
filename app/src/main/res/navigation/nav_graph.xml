@@ -20,7 +20,16 @@
         android:label="fragment_question"
         tools:layout="@layout/fragment_question" >
         <action
-            android:id="@+id/action_questionFragment_to_startFragment"
+            android:id="@+id/action_questionFragment_to_responseFragment"
+            app:destination="@id/responseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/responseFragment"
+        android:name="cl.gencina.navegacion.ResponseFragment"
+        android:label="fragment_response"
+        tools:layout="@layout/fragment_response" >
+        <action
+            android:id="@+id/action_responseFragment_to_startFragment"
             app:destination="@id/startFragment" />
     </fragment>
 </navigation>
