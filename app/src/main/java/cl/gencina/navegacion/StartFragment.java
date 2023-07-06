@@ -3,52 +3,40 @@ package cl.gencina.navegacion;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link StartFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import cl.gencina.navegacion.databinding.FragmentStartBinding;
+
 public class StartFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public StartFragment() {
-        // Required empty public constructor
-    }
-
-    public static StartFragment newInstance(String param1, String param2) {
-        StartFragment fragment = new StartFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private FragmentStartBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_start, container, false);
+        binding = FragmentStartBinding.inflate(getLayoutInflater(), container, false);
+        binding.btnComenzar.setOnClickListener(v -> sendName());
+        return binding.getRoot();
+    }
+
+    private void sendName() {
+        String nombre = binding.etvNombre.getText().toString();
+        if(!nombre.isEmpty()){
+            Bundle bundle = new Bundle();
+            bundle.putString("nombre", nombre);
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_startFragment_to_questionFragment,bundle);
+        }else{
+            Toast.makeText(getContext(),"Ingrese un nombre para continuar", Toast.LENGTH_LONG).show();
+        }
     }
 }

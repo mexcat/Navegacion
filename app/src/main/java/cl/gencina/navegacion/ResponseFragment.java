@@ -3,62 +3,49 @@ package cl.gencina.navegacion;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ResponseFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.Objects;
+
+import cl.gencina.navegacion.databinding.FragmentResponseBinding;
+
 public class ResponseFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "nombre";
+    private static final String ARG_PARAM2 = "resultado";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ResponseFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ResponseFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ResponseFragment newInstance(String param1, String param2) {
-        ResponseFragment fragment = new ResponseFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private String nombreParam;
+    private String resultParam;
+    private FragmentResponseBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            nombreParam = getArguments().getString(ARG_PARAM1);
+            resultParam = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_response, container, false);
+        String text = "";
+        binding = FragmentResponseBinding.inflate(getLayoutInflater(), container, false);
+        if(Objects.equals(resultParam, "Correcto")){
+            binding.tvRespuesta.setText(nombreParam +", eres todo un/una maestro/a pokemón!!!");
+        }else{
+            binding.tvRespuesta.setText(nombreParam +", está equivocado/a. ");
+        }
+        binding.btnReiniciar.setOnClickListener(v -> volverAlInicio());
+        return binding.getRoot();
+    }
+
+    private void volverAlInicio() {
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_responseFragment_to_startFragment);
     }
 }
